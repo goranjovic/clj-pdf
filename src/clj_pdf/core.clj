@@ -42,15 +42,20 @@
   [{style   :style
     size    :size
     [r g b] :color
-    family  :family}]
+    family  :family
+    base    :base}]
   (new Font
-       (condp = (when family (name family))
-         "courier"      (Font/COURIER)
-         "helvetica"    (Font/HELVETICA)
-         "times-roman"  (Font/TIMES_ROMAN)
-         "symbol"       (Font/SYMBOL)
-         "zapfdingbats" (Font/ZAPFDINGBATS)
-         (Font/HELVETICA))
+       
+       (if base
+         (BaseFont/createFont base BaseFont/IDENTITY_H BaseFont/EMBEDDED)
+         (condp = (when family (name family))
+           "courier"      (Font/COURIER)
+           "helvetica"    (Font/HELVETICA)
+           "times-roman"  (Font/TIMES_ROMAN)
+           "symbol"       (Font/SYMBOL)
+           "zapfdingbats" (Font/ZAPFDINGBATS)
+           (Font/HELVETICA)))
+       
        (float (or size 10))
        
        (condp = (when style (name style))
